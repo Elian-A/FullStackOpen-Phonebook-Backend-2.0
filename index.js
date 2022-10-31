@@ -1,9 +1,12 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 let persons = require('./persons.js')
 const app = express()
 
 app.use(express.json())
+app.use(express.static('dist'))
+app.use(cors())
 
 morgan.token('body', (req, res) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
@@ -26,7 +29,7 @@ app.post("/api/persons", (req, res) => {
     id: Math.round(Math.random() * 10000)
   }
   persons = [...persons, newPerson]
-  res.status(201).json(persons)
+  res.status(201).json(newPerson)
 })
 
 app.get("/api/persons/:id", (req, res) => {
@@ -49,4 +52,9 @@ app.get("/info", (req, res) => {
   res.send(info)
 })
 
-app.listen(3001)
+const unknownEndpoint = (req,res) => res.status(404).send({error:"Unknow endpoint"})
+app.use(unknownEndpoint)
+
+const PORT = 3001
+app.listen(PORT)
+console.log(`App running on port ${PORT}`)
