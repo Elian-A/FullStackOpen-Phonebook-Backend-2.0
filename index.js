@@ -1,9 +1,27 @@
 const express = require('express')
 let persons = require('./persons.js')
 const app = express()
+app.use(express.json())
 
-app.get("/api/persons", (req, res) => {
+app.get("/api/persons", (_, res) => {
   res.json(persons)
+})
+
+app.post("/api/persons", (req, res) => {
+  const { name, number } = req.body
+
+  if (!name || !number) return res.status(400).send({ error: `name and number are required` })
+  if (persons.some(p => p.name === name)) {
+    return res.status(400).send({ error: `name must be unique` })
+  }
+
+  const newPerson = {
+    name,
+    number,
+    id: Math.round(Math.random() * 10000)
+  }
+  persons = [...persons, newPerson]
+  res.status(201).json(persons)
 })
 
 app.get("/api/persons/:id", (req, res) => {
