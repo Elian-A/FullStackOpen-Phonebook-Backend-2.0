@@ -1,7 +1,9 @@
 const express = require('express')
+const morgan = require('morgan')
 let persons = require('./persons.js')
 const app = express()
 app.use(express.json())
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 
 app.get("/api/persons", (_, res) => {
   res.json(persons)
