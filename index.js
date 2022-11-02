@@ -39,28 +39,30 @@ app.delete("/api/persons/:id", (req, res, next) => {
 
 app.put("/api/persons/:id", (req, res, next) => {
   const id = req.params.id
-  const {name, number} = req.body
+  const { name, number } = req.body
   if (!name || !number) return res.status(400).send({ error: `name and number are required` })
   const updatedPerson = {
     name, number
   }
-  Person.findByIdAndUpdate(id, updatedPerson, {new: true}).then(updated => {
+  Person.findByIdAndUpdate(id, updatedPerson, { new: true }).then(updated => {
     res.send(updated)
   }).catch(err => next(err))
 })
 
 app.get("/info", (req, res) => {
-  const info = `Phonebook has info for ${persons.length} people\n ${new Date()}`
-  res.send(info)
+  Person.find({})
+    .then(persons => {
+      res.send(`Phonebook has info for ${persons.length} people\n ${new Date()}`)
+    })
 })
 
 const unknownEndpoint = (req, res) => res.status(404).send({ error: "Unknow endpoint" })
 app.use(unknownEndpoint)
 
 const errorHandler = (error, req, res, next) => {
-  if(error.name === 'CastError') {
+  if (error.name === 'CastError') {
     console.error("Error Message: ", error.message);
-    res.status(400).send({error: 'Invalid Id'})
+    res.status(400).send({ error: 'Invalid Id' })
   }
   next(error)
 }
