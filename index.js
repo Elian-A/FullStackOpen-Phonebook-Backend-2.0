@@ -37,6 +37,18 @@ app.delete("/api/persons/:id", (req, res, next) => {
   }).catch(err => next(err))
 })
 
+app.put("/api/persons/:id", (req, res, next) => {
+  const id = req.params.id
+  const {name, number} = req.body
+  if (!name || !number) return res.status(400).send({ error: `name and number are required` })
+  const updatedPerson = {
+    name, number
+  }
+  Person.findByIdAndUpdate(id, updatedPerson, {new: true}).then(updated => {
+    res.send(updated)
+  }).catch(err => next(err))
+})
+
 app.get("/info", (req, res) => {
   const info = `Phonebook has info for ${persons.length} people\n ${new Date()}`
   res.send(info)
