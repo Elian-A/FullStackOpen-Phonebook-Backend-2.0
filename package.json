@@ -9,6 +9,7 @@
     "build:ui": "rm -rf dist && cd ../full-stack-open/part2/phonebook && yarn run build && mv dist ../../../full-stack-open-backend",
     "deploy": "git push origin main",
     "deploy:full": "npm run build:ui && git add -A && git commit -m 'full deploy' && npm run deploy",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Elian Avalos",
@@ -22,6 +23,12 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^8.26.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.4.0",
+    "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^2.0.20"
   }
 }
