@@ -1,21 +1,18 @@
-require('dotenv').config()
-const mongoose = require('mongoose')
+const { Schema, model } = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
 const numberValidator = (number) => {
   let counter = 0
-  Array(number).forEach((char) => {
-    if (/\d/.test(char)) counter += 1
+  number.split('').forEach((char) => {
+    if (/\d/.test(char)) {
+      counter += 1
+    }
   })
   if (counter >= 8) return true
   return false
 }
 
-const uri = process.env.MONGO_URI
-mongoose.connect(uri).then(() => console.log('Connected'))
-  .catch((err) => console.error(`Error: ${err.message}`))
-
-const personSchema = new mongoose.Schema({
+const personSchema = new Schema({
   name: {
     type: String,
     minLength: 3,
@@ -42,4 +39,4 @@ personSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('Person', personSchema)
+module.exports = model('Person', personSchema)
