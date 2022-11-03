@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build:ui": "rm -rf dist && cd ../full-stack-open/part2/phonebook && yarn run build && mv dist ../../../full-stack-open-backend",
+    "deploy": "git push origin main",
+    "deploy:full": "npm run build:ui && git add -A && git commit -m 'full deploy' && npm run deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Elian Avalos",
@@ -15,6 +18,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^6.7.0",
+    "mongoose-unique-validator": "^3.1.0",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
